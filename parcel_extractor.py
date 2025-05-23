@@ -215,6 +215,14 @@ def main(bbox, zone, out, fields, include_labels, export_metadata, verbose):
         click.echo("❌  --bbox must be four comma-separated numbers (xmin,ymin,xmax,ymax)", err=True)
         raise SystemExit(1)
 
+    if ymin > ymax:
+        click.echo(
+            "⚠️  Warning: Input ymin (Northing_min) is greater than ymax (Northing_max).\n"
+            "The script will proceed by querying the spatial envelope of the two points defined by your input (xmin, ymin) and (xmax, ymax).\n"
+            "Effectively, the Northing range queried will be from min(ymin, ymax) to max(ymin, ymax).",
+            err=True,
+        )
+
     if verbose:
         click.echo(f"📍  Bounding box: {xmin}, {ymin}, {xmax}, {ymax} (State Plane {zone.title()})")
         click.echo(f"📄  Output file: {out}")
